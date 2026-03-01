@@ -1,0 +1,17 @@
+# English localization
+
+command:
+  player-only: "§cThis command can only be used by a player."
+  hold-item: "§cPlease hold an item in your hand."
+  add-success: "§aItem marked as indestructible."
+  remove-success: "§aIndestructible property removed from the item."
+  check-indestructible: "§aThis item is indestructible."
+  check-normal: "§7This item is normal."
+  usage-title: "§eUsage:"
+  usage-add: "§f/indestructible add §7— mark the item in hand as indestructible"
+  usage-remove: "§f/indestructible remove §7— remove the property"
+  usage-check: "§f/indestructible check §7— check the item"
+
+action:
+  cannot-drop: "§cYou cannot drop an indestructible item."
+  cannot-place: "§cYou cannot place an indestructible item."

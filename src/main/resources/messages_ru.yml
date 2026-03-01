@@ -1,0 +1,17 @@
+# Русская локализация
+
+command:
+  player-only: "§cЭту команду может выполнить только игрок."
+  hold-item: "§cВозьмите предмет в руку."
+  add-success: "§aПредмет помечен как неуничтожаемый."
+  remove-success: "§aС предмета снято свойство неуничтожаемости."
+  check-indestructible: "§aЭтот предмет неуничтожаемый."
+  check-normal: "§7Этот предмет обычный."
+  usage-title: "§eИспользование:"
+  usage-add: "§f/indestructible add §7— сделать предмет в руке неуничтожаемым"
+  usage-remove: "§f/indestructible remove §7— снять свойство"
+  usage-check: "§f/indestructible check §7— проверить предмет"
+
+action:
+  cannot-drop: "§cНеуничтожаемый предмет нельзя выбросить."
+  cannot-place: "§cНеуничтожаемый предмет нельзя поставить."

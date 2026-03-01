@@ -2,3 +2,8 @@ name: indestructible-items
 version: '1.0-SNAPSHOT'
 main: ru.nyansus.mc.indestructibleItems.IndestructibleItems
 api-version: '1.21'
+
+commands:
+  indestructible:
+    description: Сделать предмет в руке неуничтожаемым или снять свойство
+    usage: /<command> <add|remove|check>
