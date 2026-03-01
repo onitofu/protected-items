@@ -41,6 +41,21 @@ gradle build
 
 JAR будет в `build/libs/`.
 
+## Тестирование
+
+Юнит-тесты написаны на JUnit 4 и [MockBukkit](https://github.com/MockBukkit/MockBukkit) (мок-сервер Bukkit для тестов без запуска Minecraft).
+
+Запуск тестов:
+
+```bash
+gradle test
+```
+
+Покрытие:
+- **MessagesTest** — локализация (ru/en), fallback по ключам и локали.
+- **IndestructibleUtilTest** — пометка/снятие флага неуничтожаемости в PDC, граничные случаи (null, воздух).
+- **IndestructibleCommandTest** — проверка прав, пустая рука, add/remove/check, таб-дополнение.
+
 ## Лицензия
 
 По желанию укажите лицензию проекта.

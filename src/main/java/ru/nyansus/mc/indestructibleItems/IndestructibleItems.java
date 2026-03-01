@@ -2,7 +2,7 @@ package ru.nyansus.mc.indestructibleItems;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class IndestructibleItems extends JavaPlugin {
+public class IndestructibleItems extends JavaPlugin {
 
     private Messages messages;
 

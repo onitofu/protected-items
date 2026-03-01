@@ -13,3 +13,6 @@ permissions:
   indestructibleitems.use:
     description: Allows using /indestructible command
     default: op
+  indestructibleitems.bypass-store:
+    description: Allows putting indestructible items in chests and other containers (e.g. to give to players)
+    default: op

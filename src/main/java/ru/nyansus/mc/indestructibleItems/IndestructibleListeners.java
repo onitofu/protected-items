@@ -89,6 +89,9 @@ public final class IndestructibleListeners implements Listener {
         if (!(event.getWhoClicked() instanceof Player player)) {
             return;
         }
+        if (player.hasPermission("indestructibleitems.bypass-store")) {
+            return;
+        }
         InventoryView view = event.getView();
         if (view.getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.PLAYER) {
             return;
@@ -114,6 +117,9 @@ public final class IndestructibleListeners implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryDrag(InventoryDragEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
+        if (player.hasPermission("indestructibleitems.bypass-store")) {
             return;
         }
         if (event.getView().getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.PLAYER) {
