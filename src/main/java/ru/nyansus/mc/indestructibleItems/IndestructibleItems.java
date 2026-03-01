@@ -14,6 +14,7 @@ public final class IndestructibleItems extends JavaPlugin {
         getCommand("indestructible").setExecutor(cmd);
         getCommand("indestructible").setTabCompleter(cmd);
         getServer().getPluginManager().registerEvents(new IndestructibleListeners(this), this);
+        getServer().getHelpMap().addTopic(new IndestructibleHelpTopic(this));
     }
 
     public Messages getMessages() {

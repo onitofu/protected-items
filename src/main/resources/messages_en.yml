@@ -2,6 +2,7 @@
 
 command:
   player-only: "§cThis command can only be used by a player."
+  no-permission: "§cYou do not have permission to use this command."
   hold-item: "§cPlease hold an item in your hand."
   add-success: "§aItem marked as indestructible."
   remove-success: "§aIndestructible property removed from the item."
@@ -11,7 +12,10 @@ command:
   usage-add: "§f/indestructible add §7— mark the item in hand as indestructible"
   usage-remove: "§f/indestructible remove §7— remove the property"
   usage-check: "§f/indestructible check §7— check the item"
+  help-short: "Mark item in hand as indestructible"
+  help-full: "§e/indestructible add §7— mark the item in hand as indestructible\n§e/indestructible remove §7— remove the indestructible property\n§e/indestructible check §7— check if the item is marked"
 
 action:
   cannot-drop: "§cYou cannot drop an indestructible item."
   cannot-place: "§cYou cannot place an indestructible item."
+  cannot-store: "§cYou cannot put an indestructible item in a container."

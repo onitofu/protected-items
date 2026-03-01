@@ -24,6 +24,10 @@ public final class IndestructibleCommand implements CommandExecutor, TabComplete
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (!sender.hasPermission("indestructibleitems.use")) {
+            sender.sendMessage(plugin.getMessages().get(sender, "command.no-permission"));
+            return true;
+        }
         if (!(sender instanceof Player player)) {
             sender.sendMessage(plugin.getMessages().get(sender, "command.player-only"));
             return true;
@@ -82,7 +86,7 @@ public final class IndestructibleCommand implements CommandExecutor, TabComplete
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        if (args.length != 1) {
+        if (!sender.hasPermission("indestructibleitems.use") || args.length != 1) {
             return Collections.emptyList();
         }
         String prefix = args[0].toLowerCase();

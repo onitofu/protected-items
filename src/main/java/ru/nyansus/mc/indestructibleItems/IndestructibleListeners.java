@@ -6,8 +6,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -77,6 +81,54 @@ public final class IndestructibleListeners implements Listener {
         if (IndestructibleUtil.isIndestructible(plugin, event.getItemInHand())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(plugin.getMessages().get(event.getPlayer(), "action.cannot-place"));
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
+        InventoryView view = event.getView();
+        if (view.getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.PLAYER) {
+            return;
+        }
+        int topSize = view.getTopInventory().getSize();
+        boolean cancel = false;
+        if (IndestructibleUtil.isIndestructible(plugin, event.getCursor())) {
+            if (event.getRawSlot() < topSize) {
+                cancel = true;
+            }
+        }
+        if (!cancel && (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT)) {
+            if (event.getRawSlot() >= topSize && IndestructibleUtil.isIndestructible(plugin, event.getCurrentItem())) {
+                cancel = true;
+            }
+        }
+        if (cancel) {
+            event.setCancelled(true);
+            player.sendMessage(plugin.getMessages().get(player, "action.cannot-store"));
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onInventoryDrag(InventoryDragEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
+        if (event.getView().getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.PLAYER) {
+            return;
+        }
+        if (!IndestructibleUtil.isIndestructible(plugin, event.getOldCursor())) {
+            return;
+        }
+        int topSize = event.getView().getTopInventory().getSize();
+        for (int rawSlot : event.getRawSlots()) {
+            if (rawSlot < topSize) {
+                event.setCancelled(true);
+                player.sendMessage(plugin.getMessages().get(player, "action.cannot-store"));
+                return;
+            }
         }
     }
 }

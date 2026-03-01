@@ -5,5 +5,11 @@ api-version: '1.21'
 
 commands:
   indestructible:
-    description: Сделать предмет в руке неуничтожаемым или снять свойство
+    description: Mark item as indestructible or remove the property
     usage: /<command> <add|remove|check>
+    permission: indestructibleitems.use
+
+permissions:
+  indestructibleitems.use:
+    description: Allows using /indestructible command
+    default: op
