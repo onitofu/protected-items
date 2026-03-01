@@ -1,0 +1,4 @@
+name: indestructible-items
+version: '1.0-SNAPSHOT'
+main: ru.nyansus.mc.indestructibleItems.IndestructibleItems
+api-version: '1.21'
