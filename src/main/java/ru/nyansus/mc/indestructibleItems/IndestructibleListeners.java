@@ -1,5 +1,6 @@
 package ru.nyansus.mc.indestructibleItems;
 
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,7 +11,10 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
@@ -82,6 +86,40 @@ public final class IndestructibleListeners implements Listener {
             event.setCancelled(true);
             event.getPlayer().sendMessage(plugin.getMessages().get(event.getPlayer(), "action.cannot-place"));
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onItemFrameInteract(PlayerInteractEntityEvent event) {
+        if (!(event.getRightClicked() instanceof ItemFrame)) {
+            return;
+        }
+        Player player = event.getPlayer();
+        ItemStack hand = player.getInventory().getItemInMainHand();
+        if (!IndestructibleUtil.isIndestructible(plugin, hand)) {
+            return;
+        }
+        event.setCancelled(true);
+        player.sendMessage(plugin.getMessages().get(player, "action.cannot-frame"));
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onRightClickUse(PlayerInteractEvent event) {
+        if (event.getHand() != EquipmentSlot.HAND) {
+            return;
+        }
+        switch (event.getAction()) {
+            case RIGHT_CLICK_AIR:
+            case RIGHT_CLICK_BLOCK:
+                break;
+            default:
+                return;
+        }
+        ItemStack item = event.getItem();
+        if (!IndestructibleUtil.isIndestructible(plugin, item)) {
+            return;
+        }
+        event.setCancelled(true);
+        event.getPlayer().sendMessage(plugin.getMessages().get(event.getPlayer(), "action.cannot-use"));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
