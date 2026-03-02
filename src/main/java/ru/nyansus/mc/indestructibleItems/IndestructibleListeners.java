@@ -1,13 +1,21 @@
 package ru.nyansus.mc.indestructibleItems;
 
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -77,6 +85,96 @@ public final class IndestructibleListeners implements Listener {
         if (IndestructibleUtil.isIndestructible(plugin, event.getItemInHand())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(plugin.getMessages().get(event.getPlayer(), "action.cannot-place"));
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onItemFrameInteract(PlayerInteractEntityEvent event) {
+        if (!(event.getRightClicked() instanceof ItemFrame)) {
+            return;
+        }
+        Player player = event.getPlayer();
+        ItemStack hand = player.getInventory().getItemInMainHand();
+        if (!IndestructibleUtil.isIndestructible(plugin, hand)) {
+            return;
+        }
+        event.setCancelled(true);
+        player.sendMessage(plugin.getMessages().get(player, "action.cannot-frame"));
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onRightClickUse(PlayerInteractEvent event) {
+        if (event.getHand() != EquipmentSlot.HAND) {
+            return;
+        }
+        switch (event.getAction()) {
+            case RIGHT_CLICK_AIR:
+            case RIGHT_CLICK_BLOCK:
+                break;
+            default:
+                return;
+        }
+        ItemStack item = event.getItem();
+        if (!IndestructibleUtil.isIndestructible(plugin, item)) {
+            return;
+        }
+        event.setCancelled(true);
+        event.getPlayer().sendMessage(plugin.getMessages().get(event.getPlayer(), "action.cannot-use"));
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
+        if (player.hasPermission("protecteditems.bypass-store")) {
+            return;
+        }
+        InventoryView view = event.getView();
+        if (view.getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.PLAYER
+                || view.getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.ENDER_CHEST) {
+            return;
+        }
+        int topSize = view.getTopInventory().getSize();
+        boolean cancel = false;
+        if (IndestructibleUtil.isIndestructible(plugin, event.getCursor())) {
+            if (event.getRawSlot() < topSize) {
+                cancel = true;
+            }
+        }
+        if (!cancel && (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT)) {
+            if (event.getRawSlot() >= topSize && IndestructibleUtil.isIndestructible(plugin, event.getCurrentItem())) {
+                cancel = true;
+            }
+        }
+        if (cancel) {
+            event.setCancelled(true);
+            player.sendMessage(plugin.getMessages().get(player, "action.cannot-store"));
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onInventoryDrag(InventoryDragEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) {
+            return;
+        }
+        if (player.hasPermission("protecteditems.bypass-store")) {
+            return;
+        }
+        if (event.getView().getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.PLAYER
+                || event.getView().getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.ENDER_CHEST) {
+            return;
+        }
+        if (!IndestructibleUtil.isIndestructible(plugin, event.getOldCursor())) {
+            return;
+        }
+        int topSize = event.getView().getTopInventory().getSize();
+        for (int rawSlot : event.getRawSlots()) {
+            if (rawSlot < topSize) {
+                event.setCancelled(true);
+                player.sendMessage(plugin.getMessages().get(player, "action.cannot-store"));
+                return;
+            }
         }
     }
 }
