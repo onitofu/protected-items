@@ -20,4 +20,4 @@ action:
   cannot-place: "§cYou cannot place a protected item."
   cannot-store: "§cYou cannot put a protected item in a container."
   cannot-frame: "§cYou cannot put a protected item into an item frame."
-  cannot-use: "§cYou cannot use a protected item with right click."
+  cannot-use: "§cYou cannot use a protected item."
