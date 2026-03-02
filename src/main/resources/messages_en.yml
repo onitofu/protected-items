@@ -9,11 +9,11 @@ command:
   check-indestructible: "§aThis item is protected."
   check-normal: "§7This item is normal."
   usage-title: "§eUsage:"
-  usage-add: "§f/indestructible add §7— mark the item in hand as protected"
-  usage-remove: "§f/indestructible remove §7— remove the property"
-  usage-check: "§f/indestructible check §7— check the item"
+  usage-add: "§f/protected add §7— mark the item in hand as protected"
+  usage-remove: "§f/protected remove §7— remove the property"
+  usage-check: "§f/protected check §7— check the item"
   help-short: "Mark item in hand as protected"
-  help-full: "§e/indestructible add §7— mark the item in hand as protected\n§e/indestructible remove §7— remove the protected property\n§e/indestructible check §7— check if the item is marked"
+  help-full: "§e/protected add §7— mark the item in hand as protected\n§e/protected remove §7— remove the protected property\n§e/protected check §7— check if the item is marked"
 
 action:
   cannot-drop: "§cYou cannot drop a protected item."

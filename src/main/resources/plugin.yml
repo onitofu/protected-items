@@ -1,18 +1,18 @@
-name: indestructible-items
+name: protected-items
 version: '0.1.0'
 main: ru.nyansus.mc.indestructibleItems.IndestructibleItems
 api-version: '1.21'
 
 commands:
-  indestructible:
-    description: Mark item as indestructible or remove the property
+  protected:
+    description: Protect item in hand or remove protection
     usage: /<command> <add|remove|check>
-    permission: indestructibleitems.use
+    permission: protecteditems.use
 
 permissions:
-  indestructibleitems.use:
-    description: Allows using /indestructible command
+  protecteditems.use:
+    description: Allows using /protected command
     default: op
-  indestructibleitems.bypass-store:
-    description: Allows putting indestructible items in chests and other containers (e.g. to give to players)
+  protecteditems.bypass-store:
+    description: Allows putting protected items in chests and other containers (e.g. to give to players)
     default: op

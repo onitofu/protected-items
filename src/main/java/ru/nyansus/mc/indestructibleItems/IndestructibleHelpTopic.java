@@ -12,7 +12,7 @@ public final class IndestructibleHelpTopic extends HelpTopic {
 
     public IndestructibleHelpTopic(IndestructibleItems plugin) {
         this.plugin = plugin;
-        this.name = "/indestructible";
+        this.name = "/protected";
         this.shortText = plugin.getMessages().get("en", "command.help-short");
     }
 
@@ -23,6 +23,6 @@ public final class IndestructibleHelpTopic extends HelpTopic {
 
     @Override
     public boolean canSee(CommandSender sender) {
-        return sender.hasPermission("indestructibleitems.use");
+        return sender.hasPermission("protecteditems.use");
     }
 }

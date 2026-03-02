@@ -64,7 +64,7 @@ public class MessagesTest {
         String en = messages.get("en", "command.help-full");
         assertNotNull(ru);
         assertNotNull(en);
-        assertTrue(ru.contains("indestructible"));
-        assertTrue(en.contains("indestructible"));
+        assertTrue(ru.contains("/protected"));
+        assertTrue(en.contains("/protected"));
     }
 }

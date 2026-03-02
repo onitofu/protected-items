@@ -9,11 +9,11 @@ command:
   check-indestructible: "§aЭтот предмет защищённый."
   check-normal: "§7Этот предмет обычный."
   usage-title: "§eИспользование:"
-  usage-add: "§f/indestructible add §7— сделать предмет в руке защищённым"
-  usage-remove: "§f/indestructible remove §7— снять свойство"
-  usage-check: "§f/indestructible check §7— проверить предмет"
+  usage-add: "§f/protected add §7— сделать предмет в руке защищённым"
+  usage-remove: "§f/protected remove §7— снять свойство"
+  usage-check: "§f/protected check §7— проверить предмет"
   help-short: "Пометить предмет как защищённый"
-  help-full: "§e/indestructible add §7— сделать предмет в руке защищённым\n§e/indestructible remove §7— снять свойство защищённости\n§e/indestructible check §7— проверить, помечен ли предмет"
+  help-full: "§e/protected add §7— сделать предмет в руке защищённым\n§e/protected remove §7— снять свойство защищённости\n§e/protected check §7— проверить, помечен ли предмет"
 
 action:
   cannot-drop: "§cЗащищённый предмет нельзя выбросить."

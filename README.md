@@ -1,61 +1,82 @@
-# Indestructible Items
+# Protected Items
 
-Плагин для серверов Minecraft (Paper), позволяющий помечать предметы как неуничтожаемые. Такие предметы нельзя выбросить, потерять при смерти или использовать для установки блоков.
+Lightweight Paper plugin that adds a command to protect any item in a player’s hand. Protected items cannot be dropped, lost on death, used with right‑click, placed as blocks, or stored in regular containers (but can be stored in ender chests).
 
-## Требования
+## Requirements
 
-- **Paper** 1.21 или новее (или совместимые форки)
+- **Paper** 1.21 or newer (or compatible forks)
 - Java 21
 
-## Установка
+## Installation
 
-1. Скачайте последний JAR из [Releases](https://github.com/...) или соберите плагин: `gradle build`
-2. Поместите файл `indestructible-items-1.0-SNAPSHOT.jar` в папку `plugins` сервера
-3. Перезапустите сервер или выполните `paper load indestructible-items`
+1. Download the latest JAR from [Releases](https://github.com/...) or build it yourself: `gradle build`
+2. Put `protected-items-0.1.0.jar` into your server’s `plugins` folder
+3. Restart the server or run `paper load protected-items`
 
-## Использование
+## Usage
 
-### Команды
+### Commands
 
-| Команда | Описание |
-|--------|----------|
-| `/indestructible add` | Сделать предмет в основной руке неуничтожаемым |
-| `/indestructible remove` | Снять свойство неуничтожаемости с предмета в руке |
-| `/indestructible check` | Проверить, помечен ли предмет в руке как неуничтожаемый |
+| Command | Description |
+|--------|-------------|
+| `/protected add` | Mark the item in your main hand as protected |
+| `/protected remove` | Remove protection from the item in your main hand |
+| `/protected check` | Check whether the item in your main hand is protected |
 
-Команду может выполнять только игрок. Предмет должен быть взят в руку (слот основной руки).
+The command can only be used by a player, and the item must be in the main hand.
 
-### Поведение помеченных предметов
+### Protected item behavior
 
-- **Выброс** — попытка выбросить предмет отменяется, в чат выводится сообщение.
-- **Смерть** — при смерти неуничтожаемые предметы не выпадают; они возвращаются в инвентарь после респавна. Если слотов не хватает, предметы выпадают рядом с игроком.
-- **Установка блока** — установка блока таким предметом отменяется (предмет нельзя «поставить» в мир).
+- **Drop** — attempts to drop a protected item are cancelled and a message is shown.
+- **Death** — protected items are not dropped on death; they are restored to the inventory after respawn. If there is no free space, they are dropped near the player.
+- **Block placement** — placing blocks with a protected item in hand is cancelled.
+- **Right‑click use** — right‑click usage of protected items (eggs, snowballs, spawn eggs, etc.) is cancelled.
+- **Containers** — protected items cannot be moved into regular containers (chests, barrels, etc.), but **can** be stored in ender chests. Operators (or anyone with the bypass permission) can still place them in containers to give them to players.
+- **Item frames** — protected items cannot be put into item frames.
 
-Метка хранится в данных предмета (PDC) и сохраняется при перезагрузке сервера и переносе предмета.
+The protection flag is stored in the item’s Persistent Data Container (PDC), so it survives restarts and moving items between inventories.
 
-## Сборка из исходников
+## Building from source
 
 ```bash
 gradle build
 ```
 
-JAR будет в `build/libs/`.
+The JAR will be in `build/libs/`.
 
-## Тестирование
+## Testing
 
-Юнит-тесты написаны на JUnit 4 и [MockBukkit](https://github.com/MockBukkit/MockBukkit) (мок-сервер Bukkit для тестов без запуска Minecraft).
+Unit tests use JUnit 4 and [MockBukkit](https://github.com/MockBukkit/MockBukkit) (mock Bukkit server, no real Minecraft needed).
 
-Запуск тестов:
+Run tests:
 
 ```bash
 gradle test
 ```
 
-Покрытие:
-- **MessagesTest** — локализация (ru/en), fallback по ключам и локали.
-- **IndestructibleUtilTest** — пометка/снятие флага неуничтожаемости в PDC, граничные случаи (null, воздух).
-- **IndestructibleCommandTest** — проверка прав, пустая рука, add/remove/check, таб-дополнение.
+Coverage:
+- **MessagesTest** — localization (ru/en), locale and key fallbacks.
+- **IndestructibleUtilTest** — setting/clearing the protected flag in PDC, edge cases (null, air).
+- **IndestructibleCommandTest** — permissions, empty hand, add/remove/check, tab completion.
 
-## Лицензия
+### Manual testing checklist
 
-По желанию укажите лицензию проекта.
+**Commands**
+- **/protected add / remove / check**: work as described, with correct messages and permissions.
+
+**Player (no operator permissions)**
+- **Ender chest**: a protected item **can** be placed into an ender chest.
+- **Other containers**: a protected item **cannot** be placed into any other storage (chests, barrels, etc.).
+- **Death**: a protected item is **not dropped on death** and is restored to the inventory after respawn (or dropped near the player if the inventory is full).
+- **Placement & right‑click**: a protected item **cannot** be placed as a block or used with right‑click (eggs, snowballs, spawn eggs, etc.).
+- **Item frames**: a protected item **cannot** be put into an item frame.
+- **/help**: `/help protected` works and shows correct, localized information.
+- **Drop**: a protected item **cannot** be dropped from the inventory.
+
+**Operator (or players with permissions)**
+- **Storage bypass**: a protected item **can** be placed into any container (chests, barrels, etc.) when the player has the bypass permission.
+- **All other behavior**: matches the player behavior above (no dropping, no usage, protection on death, etc.).
+
+## License
+
+Choose and add a license for this project (e.g. MIT, GPL‑3.0, or another OSI‑approved license).
