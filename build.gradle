@@ -19,12 +19,8 @@ dependencies {
     testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.107.0")
 }
 
-sourceCompatibility = JavaVersion.toVersion(21)
-targetCompatibility = JavaVersion.toVersion(21)
-
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-    options.compilerArgs.addAll(['--release', '21'])
 }
 
 processResources {
