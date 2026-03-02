@@ -131,7 +131,8 @@ public final class IndestructibleListeners implements Listener {
             return;
         }
         InventoryView view = event.getView();
-        if (view.getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.PLAYER) {
+        if (view.getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.PLAYER
+                || view.getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.ENDER_CHEST) {
             return;
         }
         int topSize = view.getTopInventory().getSize();
@@ -160,7 +161,8 @@ public final class IndestructibleListeners implements Listener {
         if (player.hasPermission("indestructibleitems.bypass-store")) {
             return;
         }
-        if (event.getView().getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.PLAYER) {
+        if (event.getView().getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.PLAYER
+                || event.getView().getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.ENDER_CHEST) {
             return;
         }
         if (!IndestructibleUtil.isIndestructible(plugin, event.getOldCursor())) {
