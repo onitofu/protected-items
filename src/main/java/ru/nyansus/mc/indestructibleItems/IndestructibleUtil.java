@@ -43,4 +43,18 @@ public final class IndestructibleUtil {
         }
         item.setItemMeta(meta);
     }
+
+    public static String formatItemName(ItemStack item) {
+        if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
+            return item.getItemMeta().getDisplayName();
+        }
+        String name = item.getType().name().toLowerCase().replace('_', ' ');
+        StringBuilder sb = new StringBuilder();
+        for (String word : name.split(" ")) {
+            if (!sb.isEmpty()) sb.append(' ');
+            sb.append(Character.toUpperCase(word.charAt(0)));
+            sb.append(word.substring(1));
+        }
+        return sb.toString();
+    }
 }
