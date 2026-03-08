@@ -1,4 +1,4 @@
-package ru.nyansus.mc.indestructibleItems;
+package ru.nyansus.mc.protected_items;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

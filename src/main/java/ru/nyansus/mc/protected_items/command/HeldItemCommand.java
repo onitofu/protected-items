@@ -1,9 +1,9 @@
-package ru.nyansus.mc.indestructibleItems.command;
+package ru.nyansus.mc.protected_items.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import ru.nyansus.mc.indestructibleItems.IndestructibleItems;
+import ru.nyansus.mc.protected_items.IndestructibleItems;
 
 /**
  * Base for subcommands that require a player holding a non-air item.

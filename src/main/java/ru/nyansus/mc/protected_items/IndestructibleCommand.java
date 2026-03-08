@@ -1,4 +1,4 @@
-package ru.nyansus.mc.indestructibleItems;
+package ru.nyansus.mc.protected_items;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -6,9 +6,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.nyansus.mc.indestructibleItems.command.*;
+import ru.nyansus.mc.protected_items.command.AddCommand;
+import ru.nyansus.mc.protected_items.command.CheckCommand;
+import ru.nyansus.mc.protected_items.command.ICommand;
+import ru.nyansus.mc.protected_items.command.ListAllCommand;
+import ru.nyansus.mc.protected_items.command.ListCommand;
+import ru.nyansus.mc.protected_items.command.RemoveCommand;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class IndestructibleCommand implements CommandExecutor, TabCompleter {
@@ -34,7 +43,8 @@ public final class IndestructibleCommand implements CommandExecutor, TabComplete
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission(Permissions.USE)) {
             sender.sendMessage(plugin.getMessages().get(sender, "command.no-permission"));
             return true;
@@ -75,7 +85,8 @@ public final class IndestructibleCommand implements CommandExecutor, TabComplete
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
+            @NotNull String alias, @NotNull String[] args) {
         if (!sender.hasPermission(Permissions.USE)) {
             return Collections.emptyList();
         }

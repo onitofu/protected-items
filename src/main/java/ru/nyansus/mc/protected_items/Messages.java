@@ -1,4 +1,4 @@
-package ru.nyansus.mc.indestructibleItems;
+package ru.nyansus.mc.protected_items;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;

@@ -1,4 +1,4 @@
-package ru.nyansus.mc.indestructibleItems.command;
+package ru.nyansus.mc.protected_items.command;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.Nullable;

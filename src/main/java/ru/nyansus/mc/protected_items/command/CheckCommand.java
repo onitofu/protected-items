@@ -1,10 +1,10 @@
-package ru.nyansus.mc.indestructibleItems.command;
+package ru.nyansus.mc.protected_items.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import ru.nyansus.mc.indestructibleItems.IndestructibleItems;
-import ru.nyansus.mc.indestructibleItems.IndestructibleUtil;
+import ru.nyansus.mc.protected_items.IndestructibleItems;
+import ru.nyansus.mc.protected_items.IndestructibleUtil;
 
 import java.util.List;
 

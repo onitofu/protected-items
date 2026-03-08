@@ -1,6 +1,12 @@
 plugins {
     id 'java'
     id 'jacoco'
+    id 'checkstyle'
+}
+
+checkstyle {
+    configFile = file('checkstyle/checkstyle.xml')
+    toolVersion = '10.21.4'
 }
 
 group = 'ru.nyansus.mc'
