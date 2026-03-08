@@ -16,7 +16,7 @@ public final class CheckCommand extends HeldItemCommand {
 
     @Override
     protected void executeWithItem(Player player, ItemStack hand, String[] args) {
-        boolean indestructible = IndestructibleUtil.isIndestructible(plugin, hand);
+        boolean indestructible = IndestructibleUtil.isIndestructible(hand);
         String key = indestructible ? "command.check-indestructible" : "command.check-normal";
         player.sendMessage(plugin.getMessages().get(player, key));
     }

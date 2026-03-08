@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import ru.nyansus.mc.indestructibleItems.IndestructibleItems;
 import ru.nyansus.mc.indestructibleItems.IndestructibleUtil;
+import ru.nyansus.mc.indestructibleItems.Permissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +23,15 @@ public final class ListCommand implements ICommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length >= 2) {
-            if (!sender.hasPermission("protecteditems.admin")) {
+            if (!sender.hasPermission(Permissions.ADMIN)) {
                 sender.sendMessage(plugin.getMessages().get(sender, "command.no-permission"));
                 return;
             }
             String targetName = args[1];
             Player target = Bukkit.getPlayer(targetName);
             if (target == null) {
-                sender.sendMessage(plugin.getMessages().get(sender, "command.list-player-not-found")
-                        .replace("{player}", targetName));
+                sender.sendMessage(plugin.getMessages().get(sender, "command.list-player-not-found",
+                        "{player}", targetName));
                 return;
             }
             listPlayerItems(sender, target, true);
@@ -46,7 +47,7 @@ public final class ListCommand implements ICommand {
     private void listPlayerItems(CommandSender sender, Player target, boolean other) {
         List<ItemStack> found = new ArrayList<>();
         for (ItemStack item : target.getInventory().getContents()) {
-            if (IndestructibleUtil.isIndestructible(plugin, item)) {
+            if (IndestructibleUtil.isIndestructible(item)) {
                 found.add(item);
             }
         }
@@ -57,20 +58,20 @@ public final class ListCommand implements ICommand {
         }
 
         String header = other
-                ? plugin.getMessages().get(sender, "command.list-other-header").replace("{player}", target.getName())
+                ? plugin.getMessages().get(sender, "command.list-other-header", "{player}", target.getName())
                 : plugin.getMessages().get(sender, "command.list-header");
         sender.sendMessage(header);
 
         for (ItemStack item : found) {
-            sender.sendMessage(plugin.getMessages().get(sender, "command.list-item")
-                    .replace("{item}", IndestructibleUtil.formatItemName(item))
-                    .replace("{amount}", String.valueOf(item.getAmount())));
+            sender.sendMessage(plugin.getMessages().get(sender, "command.list-item",
+                    "{item}", IndestructibleUtil.formatItemName(item),
+                    "{amount}", String.valueOf(item.getAmount())));
         }
     }
 
     @Override
     public List<String> tabComplete(CommandSender sender, String[] args) {
-        if (args.length == 2 && sender.hasPermission("protecteditems.admin")) {
+        if (args.length == 2 && sender.hasPermission(Permissions.ADMIN)) {
             String prefix = args[1].toLowerCase();
             return Bukkit.getOnlinePlayers().stream()
                     .map(Player::getName)
@@ -84,7 +85,7 @@ public final class ListCommand implements ICommand {
     public List<String> getUsageKeys(CommandSender sender) {
         List<String> keys = new ArrayList<>();
         keys.add("command.usage-list");
-        if (sender.hasPermission("protecteditems.admin")) {
+        if (sender.hasPermission(Permissions.ADMIN)) {
             keys.add("command.usage-list-other");
         }
         return keys;

@@ -5,14 +5,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryView;
@@ -34,7 +37,7 @@ public final class IndestructibleListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDrop(PlayerDropItemEvent event) {
-        if (IndestructibleUtil.isIndestructible(plugin, event.getItemDrop().getItemStack())) {
+        if (IndestructibleUtil.isIndestructible(event.getItemDrop().getItemStack())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(plugin.getMessages().get(event.getPlayer(), "action.cannot-drop"));
         }
@@ -47,7 +50,7 @@ public final class IndestructibleListeners implements Listener {
         List<ItemStack> drops = new ArrayList<>(event.getDrops());
 
         for (ItemStack drop : drops) {
-            if (IndestructibleUtil.isIndestructible(plugin, drop)) {
+            if (IndestructibleUtil.isIndestructible(drop)) {
                 toKeep.add(drop.clone());
             }
         }
@@ -56,7 +59,7 @@ public final class IndestructibleListeners implements Listener {
             return;
         }
 
-        drops.removeIf(stack -> IndestructibleUtil.isIndestructible(plugin, stack));
+        drops.removeIf(IndestructibleUtil::isIndestructible);
         event.getDrops().clear();
         event.getDrops().addAll(drops);
         keptOnDeath.put(player.getUniqueId(), toKeep);
@@ -80,9 +83,14 @@ public final class IndestructibleListeners implements Listener {
         }, 1L);
     }
 
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        keptOnDeath.remove(event.getPlayer().getUniqueId());
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (IndestructibleUtil.isIndestructible(plugin, event.getItemInHand())) {
+        if (IndestructibleUtil.isIndestructible(event.getItemInHand())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(plugin.getMessages().get(event.getPlayer(), "action.cannot-place"));
         }
@@ -95,7 +103,7 @@ public final class IndestructibleListeners implements Listener {
         }
         Player player = event.getPlayer();
         ItemStack hand = player.getInventory().getItemInMainHand();
-        if (!IndestructibleUtil.isIndestructible(plugin, hand)) {
+        if (!IndestructibleUtil.isIndestructible(hand)) {
             return;
         }
         event.setCancelled(true);
@@ -107,15 +115,12 @@ public final class IndestructibleListeners implements Listener {
         if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
-        switch (event.getAction()) {
-            case RIGHT_CLICK_AIR:
-            case RIGHT_CLICK_BLOCK:
-                break;
-            default:
-                return;
+        Action action = event.getAction();
+        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
+            return;
         }
         ItemStack item = event.getItem();
-        if (!IndestructibleUtil.isIndestructible(plugin, item)) {
+        if (!IndestructibleUtil.isIndestructible(item)) {
             return;
         }
         event.setCancelled(true);
@@ -127,23 +132,22 @@ public final class IndestructibleListeners implements Listener {
         if (!(event.getWhoClicked() instanceof Player player)) {
             return;
         }
-        if (player.hasPermission("protecteditems.bypass-store")) {
+        if (player.hasPermission(Permissions.BYPASS_STORE)) {
             return;
         }
         InventoryView view = event.getView();
-        if (view.getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.PLAYER
-                || view.getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.ENDER_CHEST) {
+        if (!isExternalContainer(view)) {
             return;
         }
         int topSize = view.getTopInventory().getSize();
         boolean cancel = false;
-        if (IndestructibleUtil.isIndestructible(plugin, event.getCursor())) {
+        if (IndestructibleUtil.isIndestructible(event.getCursor())) {
             if (event.getRawSlot() < topSize) {
                 cancel = true;
             }
         }
         if (!cancel && (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT)) {
-            if (event.getRawSlot() >= topSize && IndestructibleUtil.isIndestructible(plugin, event.getCurrentItem())) {
+            if (event.getRawSlot() >= topSize && IndestructibleUtil.isIndestructible(event.getCurrentItem())) {
                 cancel = true;
             }
         }
@@ -158,14 +162,13 @@ public final class IndestructibleListeners implements Listener {
         if (!(event.getWhoClicked() instanceof Player player)) {
             return;
         }
-        if (player.hasPermission("protecteditems.bypass-store")) {
+        if (player.hasPermission(Permissions.BYPASS_STORE)) {
             return;
         }
-        if (event.getView().getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.PLAYER
-                || event.getView().getTopInventory().getType() == org.bukkit.event.inventory.InventoryType.ENDER_CHEST) {
+        if (!isExternalContainer(event.getView())) {
             return;
         }
-        if (!IndestructibleUtil.isIndestructible(plugin, event.getOldCursor())) {
+        if (!IndestructibleUtil.isIndestructible(event.getOldCursor())) {
             return;
         }
         int topSize = event.getView().getTopInventory().getSize();
@@ -176,5 +179,10 @@ public final class IndestructibleListeners implements Listener {
                 return;
             }
         }
+    }
+
+    private static boolean isExternalContainer(InventoryView view) {
+        InventoryType type = view.getTopInventory().getType();
+        return type != InventoryType.PLAYER && type != InventoryType.ENDER_CHEST;
     }
 }

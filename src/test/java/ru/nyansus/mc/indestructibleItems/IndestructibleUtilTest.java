@@ -8,13 +8,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Тесты утилиты пометки предметов как неуничтожаемых (PDC).
- */
 public class IndestructibleUtilTest {
 
     private ServerMock server;
@@ -34,40 +32,38 @@ public class IndestructibleUtilTest {
     @Test
     public void isIndestructible_emptyItem_returnsFalse() {
         ItemStack air = new ItemStack(Material.AIR);
-        assertFalse(IndestructibleUtil.isIndestructible(plugin, air));
+        assertFalse(IndestructibleUtil.isIndestructible(air));
     }
 
     @Test
     public void isIndestructible_null_returnsFalse() {
-        assertFalse(IndestructibleUtil.isIndestructible(plugin, null));
+        assertFalse(IndestructibleUtil.isIndestructible(null));
     }
 
     @Test
     public void isIndestructible_normalItem_returnsFalse() {
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        assertFalse(IndestructibleUtil.isIndestructible(plugin, sword));
+        assertFalse(IndestructibleUtil.isIndestructible(sword));
     }
 
     @Test
     public void setIndestructible_add_thenIsIndestructible_returnsTrue() {
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(plugin, sword, true);
-        assertTrue(IndestructibleUtil.isIndestructible(plugin, sword));
+        IndestructibleUtil.setIndestructible(sword, true);
+        assertTrue(IndestructibleUtil.isIndestructible(sword));
     }
 
     @Test
     public void setIndestructible_remove_thenIsIndestructible_returnsFalse() {
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(plugin, sword, true);
-        IndestructibleUtil.setIndestructible(plugin, sword, false);
-        assertFalse(IndestructibleUtil.isIndestructible(plugin, sword));
+        IndestructibleUtil.setIndestructible(sword, true);
+        IndestructibleUtil.setIndestructible(sword, false);
+        assertFalse(IndestructibleUtil.isIndestructible(sword));
     }
 
     @Test
-    public void getKey_returnsSameKeyForSamePlugin() {
-        var key1 = IndestructibleUtil.getKey(plugin);
-        var key2 = IndestructibleUtil.getKey(plugin);
-        assertEquals(key1.getNamespace(), key2.getNamespace());
-        assertEquals(key1.getKey(), key2.getKey());
+    public void getKey_returnsCachedInstance() {
+        assertNotNull(IndestructibleUtil.getKey());
+        assertSame(IndestructibleUtil.getKey(), IndestructibleUtil.getKey());
     }
 }

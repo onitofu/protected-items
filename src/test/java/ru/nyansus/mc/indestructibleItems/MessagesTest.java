@@ -10,9 +10,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Тесты локализации сообщений.
- */
 public class MessagesTest {
 
     private ServerMock server;

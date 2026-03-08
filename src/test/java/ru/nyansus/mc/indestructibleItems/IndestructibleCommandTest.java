@@ -12,9 +12,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Тесты команды /protected.
- */
 public class IndestructibleCommandTest {
 
     private ServerMock server;
@@ -66,7 +63,7 @@ public class IndestructibleCommandTest {
         boolean result = command.onCommand(player, null, "protected", new String[]{"add"});
 
         assertTrue(result);
-        assertTrue(IndestructibleUtil.isIndestructible(plugin, player.getInventory().getItemInMainHand()));
+        assertTrue(IndestructibleUtil.isIndestructible(player.getInventory().getItemInMainHand()));
         player.assertSaid(plugin.getMessages().get(player, "command.add-success"));
     }
 
@@ -75,12 +72,12 @@ public class IndestructibleCommandTest {
         PlayerMock player = server.addPlayer();
         player.addAttachment(plugin, "protecteditems.use", true);
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(plugin, sword, true);
+        IndestructibleUtil.setIndestructible(sword, true);
         player.getInventory().setItemInMainHand(sword);
 
         command.onCommand(player, null, "protected", new String[]{"remove"});
 
-        assertFalse(IndestructibleUtil.isIndestructible(plugin, player.getInventory().getItemInMainHand()));
+        assertFalse(IndestructibleUtil.isIndestructible(player.getInventory().getItemInMainHand()));
     }
 
     @Test
@@ -88,7 +85,7 @@ public class IndestructibleCommandTest {
         PlayerMock player = server.addPlayer();
         player.addAttachment(plugin, "protecteditems.use", true);
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(plugin, sword, true);
+        IndestructibleUtil.setIndestructible(sword, true);
         player.getInventory().setItemInMainHand(sword);
 
         command.onCommand(player, null, "protected", new String[]{"check"});

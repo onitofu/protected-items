@@ -35,7 +35,7 @@ public final class IndestructibleCommand implements CommandExecutor, TabComplete
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!sender.hasPermission("protecteditems.use")) {
+        if (!sender.hasPermission(Permissions.USE)) {
             sender.sendMessage(plugin.getMessages().get(sender, "command.no-permission"));
             return true;
         }
@@ -76,7 +76,7 @@ public final class IndestructibleCommand implements CommandExecutor, TabComplete
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        if (!sender.hasPermission("protecteditems.use")) {
+        if (!sender.hasPermission(Permissions.USE)) {
             return Collections.emptyList();
         }
         if (args.length == 1) {

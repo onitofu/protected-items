@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import ru.nyansus.mc.indestructibleItems.IndestructibleItems;
 import ru.nyansus.mc.indestructibleItems.IndestructibleUtil;
+import ru.nyansus.mc.indestructibleItems.Permissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public final class ListAllCommand implements ICommand {
 
     @Override
     public String requiredPermission() {
-        return "protecteditems.admin";
+        return Permissions.ADMIN;
     }
 
     @Override
@@ -54,22 +55,22 @@ public final class ListAllCommand implements ICommand {
 
     private void collectFromInventory(CommandSender sender, Player player, List<String> lines) {
         for (ItemStack item : player.getInventory().getContents()) {
-            if (IndestructibleUtil.isIndestructible(plugin, item)) {
-                lines.add(plugin.getMessages().get(sender, "command.listall-inventory")
-                        .replace("{item}", IndestructibleUtil.formatItemName(item))
-                        .replace("{amount}", String.valueOf(item.getAmount()))
-                        .replace("{player}", player.getName()));
+            if (IndestructibleUtil.isIndestructible(item)) {
+                lines.add(plugin.getMessages().get(sender, "command.listall-inventory",
+                        "{item}", IndestructibleUtil.formatItemName(item),
+                        "{amount}", String.valueOf(item.getAmount()),
+                        "{player}", player.getName()));
             }
         }
     }
 
     private void collectFromEnderChest(CommandSender sender, Player player, List<String> lines) {
         for (ItemStack item : player.getEnderChest().getContents()) {
-            if (IndestructibleUtil.isIndestructible(plugin, item)) {
-                lines.add(plugin.getMessages().get(sender, "command.listall-enderchest")
-                        .replace("{item}", IndestructibleUtil.formatItemName(item))
-                        .replace("{amount}", String.valueOf(item.getAmount()))
-                        .replace("{player}", player.getName()));
+            if (IndestructibleUtil.isIndestructible(item)) {
+                lines.add(plugin.getMessages().get(sender, "command.listall-enderchest",
+                        "{item}", IndestructibleUtil.formatItemName(item),
+                        "{amount}", String.valueOf(item.getAmount()),
+                        "{player}", player.getName()));
             }
         }
     }
@@ -81,15 +82,15 @@ public final class ListAllCommand implements ICommand {
                     continue;
                 }
                 for (ItemStack item : container.getInventory().getContents()) {
-                    if (IndestructibleUtil.isIndestructible(plugin, item)) {
+                    if (IndestructibleUtil.isIndestructible(item)) {
                         Location loc = state.getLocation();
-                        lines.add(plugin.getMessages().get(sender, "command.listall-container")
-                                .replace("{item}", IndestructibleUtil.formatItemName(item))
-                                .replace("{amount}", String.valueOf(item.getAmount()))
-                                .replace("{world}", world.getName())
-                                .replace("{x}", String.valueOf(loc.getBlockX()))
-                                .replace("{y}", String.valueOf(loc.getBlockY()))
-                                .replace("{z}", String.valueOf(loc.getBlockZ())));
+                        lines.add(plugin.getMessages().get(sender, "command.listall-container",
+                                "{item}", IndestructibleUtil.formatItemName(item),
+                                "{amount}", String.valueOf(item.getAmount()),
+                                "{world}", world.getName(),
+                                "{x}", String.valueOf(loc.getBlockX()),
+                                "{y}", String.valueOf(loc.getBlockY()),
+                                "{z}", String.valueOf(loc.getBlockZ())));
                     }
                 }
             }

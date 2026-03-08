@@ -12,11 +12,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
 
-/**
- * Загрузка и выдача сообщений по локали (ru / en).
- * Для игрока используется локаль клиента, для консоли — из config.yml.
- */
 public final class Messages {
 
     private static final String FALLBACK_LOCALE = "en";
@@ -56,13 +53,11 @@ public final class Messages {
             YamlConfiguration config = YamlConfiguration.loadConfiguration(
                     new InputStreamReader(stream, StandardCharsets.UTF_8));
             locales.put(locale, config);
-        } catch (IOException ignored) {
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to load locale file: " + resource, e);
         }
     }
 
-    /**
-     * Возвращает сообщение для отправителя команды (игрок — по его локали, консоль — default-locale).
-     */
     public String get(CommandSender sender, String key) {
         String locale = defaultLocale;
         if (sender instanceof Player player) {
@@ -72,15 +67,21 @@ public final class Messages {
     }
 
     /**
-     * Возвращает сообщение для игрока по его локали.
+     * Resolves a message for the given sender and applies placeholder pairs.
+     * Example: {@code get(sender, "key", "{player}", name, "{amount}", "5")}
      */
+    public String get(CommandSender sender, String key, String... replacements) {
+        String msg = get(sender, key);
+        for (int i = 0; i + 1 < replacements.length; i += 2) {
+            msg = msg.replace(replacements[i], replacements[i + 1]);
+        }
+        return msg;
+    }
+
     public String get(Player player, String key) {
         return get(normalizeLocale(player.getLocale()), key);
     }
 
-    /**
-     * Возвращает сообщение по коду локали (ru, en).
-     */
     public String get(String locale, String key) {
         String msg = getFromLocale(locale, key);
         if (msg != null) {

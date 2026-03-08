@@ -16,7 +16,7 @@ public final class RemoveCommand extends HeldItemCommand {
 
     @Override
     protected void executeWithItem(Player player, ItemStack hand, String[] args) {
-        IndestructibleUtil.setIndestructible(plugin, hand, false);
+        IndestructibleUtil.setIndestructible(hand, false);
         player.sendMessage(plugin.getMessages().get(player, "command.remove-success"));
     }
 

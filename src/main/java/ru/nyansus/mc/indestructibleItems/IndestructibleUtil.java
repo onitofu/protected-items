@@ -9,15 +9,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class IndestructibleUtil {
 
     private static final String KEY = "indestructible";
+    private static NamespacedKey cachedKey;
 
     private IndestructibleUtil() {
     }
 
-    public static NamespacedKey getKey(JavaPlugin plugin) {
-        return new NamespacedKey(plugin, KEY);
+    public static void init(JavaPlugin plugin) {
+        cachedKey = new NamespacedKey(plugin, KEY);
     }
 
-    public static boolean isIndestructible(JavaPlugin plugin, ItemStack item) {
+    public static NamespacedKey getKey() {
+        return cachedKey;
+    }
+
+    public static boolean isIndestructible(ItemStack item) {
         if (item == null || !item.hasItemMeta()) {
             return false;
         }
@@ -25,10 +30,10 @@ public final class IndestructibleUtil {
         if (meta == null) {
             return false;
         }
-        return meta.getPersistentDataContainer().get(getKey(plugin), PersistentDataType.BYTE) != null;
+        return meta.getPersistentDataContainer().get(cachedKey, PersistentDataType.BYTE) != null;
     }
 
-    public static void setIndestructible(JavaPlugin plugin, ItemStack item, boolean value) {
+    public static void setIndestructible(ItemStack item, boolean value) {
         if (item == null) {
             return;
         }
@@ -37,9 +42,9 @@ public final class IndestructibleUtil {
             return;
         }
         if (value) {
-            meta.getPersistentDataContainer().set(getKey(plugin), PersistentDataType.BYTE, (byte) 1);
+            meta.getPersistentDataContainer().set(cachedKey, PersistentDataType.BYTE, (byte) 1);
         } else {
-            meta.getPersistentDataContainer().remove(getKey(plugin));
+            meta.getPersistentDataContainer().remove(cachedKey);
         }
         item.setItemMeta(meta);
     }

@@ -16,7 +16,7 @@ public final class AddCommand extends HeldItemCommand {
 
     @Override
     protected void executeWithItem(Player player, ItemStack hand, String[] args) {
-        IndestructibleUtil.setIndestructible(plugin, hand, true);
+        IndestructibleUtil.setIndestructible(hand, true);
         player.sendMessage(plugin.getMessages().get(player, "command.add-success"));
     }
 
