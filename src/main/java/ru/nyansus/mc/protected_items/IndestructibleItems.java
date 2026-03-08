@@ -1,4 +1,4 @@
-package ru.nyansus.mc.indestructibleItems;
+package ru.nyansus.mc.protected_items;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,6 +9,7 @@ public class IndestructibleItems extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        IndestructibleUtil.init(this);
         messages = new Messages(this);
         IndestructibleCommand cmd = new IndestructibleCommand(this);
         getCommand("protected").setExecutor(cmd);

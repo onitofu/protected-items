@@ -1,17 +1,20 @@
 name: protected-items
-version: '0.1.0'
-main: ru.nyansus.mc.indestructibleItems.IndestructibleItems
+version: '${version}'
+main: ru.nyansus.mc.protected_items.IndestructibleItems
 api-version: '1.21'
 
 commands:
   protected:
     description: Protect item in hand or remove protection
-    usage: /<command> <add|remove|check>
+    usage: /<command> <add|remove|check|list|listall>
     permission: protecteditems.use
 
 permissions:
   protecteditems.use:
     description: Allows using /protected command
+    default: op
+  protecteditems.admin:
+    description: Allows using /protected list <player> and /protected listall
     default: op
   protecteditems.bypass-store:
     description: Allows putting protected items in chests and other containers (e.g. to give to players)

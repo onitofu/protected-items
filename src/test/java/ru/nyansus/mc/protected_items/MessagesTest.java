@@ -1,4 +1,4 @@
-package ru.nyansus.mc.indestructibleItems;
+package ru.nyansus.mc.protected_items;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
@@ -10,9 +10,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Тесты локализации сообщений.
- */
 public class MessagesTest {
 
     private ServerMock server;
@@ -56,6 +53,13 @@ public class MessagesTest {
         String msg = messages.get("xx", "command.hold-item");
         assertNotNull(msg);
         assertTrue(msg.contains("hand") || msg.contains("item") || msg.contains("Hold"));
+    }
+
+    @Test
+    public void get_withPlaceholders_replacesValues() {
+        String msg = messages.get("en", "command.list-other-header");
+        assertNotNull(msg);
+        assertTrue(msg.contains("{player}"));
     }
 
     @Test
