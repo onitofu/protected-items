@@ -79,4 +79,4 @@ Coverage:
 
 ## License
 
-Choose and add a license for this project (e.g. MIT, GPL‑3.0, or another OSI‑approved license).
+MIT

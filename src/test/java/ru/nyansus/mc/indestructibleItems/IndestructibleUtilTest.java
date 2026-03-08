@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
@@ -65,5 +66,25 @@ public class IndestructibleUtilTest {
     public void getKey_returnsCachedInstance() {
         assertNotNull(IndestructibleUtil.getKey());
         assertSame(IndestructibleUtil.getKey(), IndestructibleUtil.getKey());
+    }
+
+    @Test
+    public void setIndestructible_null_doesNotThrow() {
+        IndestructibleUtil.setIndestructible(null, true);
+        IndestructibleUtil.setIndestructible(null, false);
+    }
+
+    @Test
+    public void formatItemName_normalItem_capitalizedWords() {
+        ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
+        String name = IndestructibleUtil.formatItemName(sword);
+        assertEquals("Diamond Sword", name);
+    }
+
+    @Test
+    public void formatItemName_singleWord_capitalized() {
+        ItemStack dirt = new ItemStack(Material.DIRT);
+        String name = IndestructibleUtil.formatItemName(dirt);
+        assertEquals("Dirt", name);
     }
 }

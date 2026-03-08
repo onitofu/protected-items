@@ -56,6 +56,13 @@ public class MessagesTest {
     }
 
     @Test
+    public void get_withPlaceholders_replacesValues() {
+        String msg = messages.get("en", "command.list-other-header");
+        assertNotNull(msg);
+        assertTrue(msg.contains("{player}"));
+    }
+
+    @Test
     public void get_helpFull_containsCommandSubcommands() {
         String ru = messages.get("ru", "command.help-full");
         String en = messages.get("en", "command.help-full");
