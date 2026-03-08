@@ -1,81 +1,81 @@
 # Protected Items
 
-Lightweight Paper plugin that adds a command to protect any item in a player’s hand. Protected items cannot be dropped, lost on death, used with right‑click, placed as blocks, or stored in regular containers (but can be stored in ender chests).
+Lightweight Paper plugin that allows operators to mark items as protected. Protected items cannot be dropped, lost on death, placed as blocks, used with right-click, or stored in regular containers.
 
 ## Requirements
 
-- **Paper** 1.21 or newer (or compatible forks)
+- **Paper** 1.21+ (or compatible forks)
 - Java 21
+
+## Project Structure
+
+```
+src/main/java/ru/nyansus/mc/protected_items/
+├── IndestructibleItems.java      # Plugin entry point
+├── IndestructibleCommand.java    # Command dispatcher
+├── IndestructibleListeners.java  # Event handlers
+├── IndestructibleUtil.java       # PDC utilities
+├── IndestructibleHelpTopic.java  # Custom /help topic
+├── Messages.java                 # Locale-aware message loader
+├── Permissions.java              # Permission constants
+└── command/                      # Subcommand implementations
+    ├── ICommand.java
+    ├── HeldItemCommand.java
+    ├── AddCommand.java
+    ├── RemoveCommand.java
+    ├── CheckCommand.java
+    ├── ListCommand.java
+    └── ListAllCommand.java
+```
+
+## Building
+
+```bash
+./gradlew build
+```
+
+The output JAR is placed in `build/libs/`.
 
 ## Installation
 
-1. Download the latest JAR from [Releases](https://github.com/...) or build it yourself: `gradle build`
-2. Put `protected-items-0.1.0.jar` into your server’s `plugins` folder
-3. Restart the server or run `paper load protected-items`
+1. Build the plugin or download the JAR from [Releases](https://github.com/onitofu/protected-items/releases).
+2. Place `protected-items-<version>.jar` into the server's `plugins/` directory.
+3. Restart the server.
 
-## Usage
+## Configuration
 
-### Commands
-
-| Command | Description |
-|--------|-------------|
-| `/protected add` | Mark the item in your main hand as protected |
-| `/protected remove` | Remove protection from the item in your main hand |
-| `/protected check` | Check whether the item in your main hand is protected |
-
-The command can only be used by a player, and the item must be in the main hand.
-
-### Protected item behavior
-
-- **Drop** — attempts to drop a protected item are cancelled and a message is shown.
-- **Death** — protected items are not dropped on death; they are restored to the inventory after respawn. If there is no free space, they are dropped near the player.
-- **Block placement** — placing blocks with a protected item in hand is cancelled.
-- **Right‑click use** — right‑click usage of protected items (eggs, snowballs, spawn eggs, etc.) is cancelled.
-- **Containers** — protected items cannot be moved into regular containers (chests, barrels, etc.), but **can** be stored in ender chests. Operators (or anyone with the bypass permission) can still place them in containers to give them to players.
-- **Item frames** — protected items cannot be put into item frames.
-
-The protection flag is stored in the item’s Persistent Data Container (PDC), so it survives restarts and moving items between inventories.
-
-## Building from source
-
-```bash
-gradle build
-```
-
-The JAR will be in `build/libs/`.
+The plugin ships with two locale files (`messages_en.yml`, `messages_ru.yml`). The locale is selected per-player based on the client language setting, with English as the fallback. No additional configuration is required.
 
 ## Testing
 
-Unit tests use JUnit 4 and [MockBukkit](https://github.com/MockBukkit/MockBukkit) (mock Bukkit server, no real Minecraft needed).
-
-Run tests:
+Tests use **JUnit 4** and [MockBukkit](https://github.com/MockBukkit/MockBukkit).
 
 ```bash
-gradle test
+./gradlew test
 ```
 
-Coverage:
-- **MessagesTest** — localization (ru/en), locale and key fallbacks.
-- **IndestructibleUtilTest** — setting/clearing the protected flag in PDC, edge cases (null, air).
-- **IndestructibleCommandTest** — permissions, empty hand, add/remove/check, tab completion.
+Coverage reports (JaCoCo) are generated automatically after tests:
 
-### Manual testing checklist
+```bash
+./gradlew jacocoTestReport
+# HTML report: build/reports/jacoco/test/html/index.html
+```
 
-**Commands**
-- **/protected add / remove / check**: work as described, with correct messages and permissions.
+## Code Style
 
-**Player (no operator permissions)**
-- **Ender chest**: a protected item **can** be placed into an ender chest.
-- **Other containers**: a protected item **cannot** be placed into any other storage (chests, barrels, etc.).
-- **Death**: a protected item is **not dropped on death** and is restored to the inventory after respawn (or dropped near the player if the inventory is full).
-- **Placement & right‑click**: a protected item **cannot** be placed as a block or used with right‑click (eggs, snowballs, spawn eggs, etc.).
-- **Item frames**: a protected item **cannot** be put into an item frame.
-- **/help**: `/help protected` works and shows correct, localized information.
-- **Drop**: a protected item **cannot** be dropped from the inventory.
+The project uses [Checkstyle](https://checkstyle.org/) with a configuration based on Google Java Style (4-space indent, 120-char line length, no Javadoc enforcement). Run it with:
 
-**Operator (or players with permissions)**
-- **Storage bypass**: a protected item **can** be placed into any container (chests, barrels, etc.) when the player has the bypass permission.
-- **All other behavior**: matches the player behavior above (no dropping, no usage, protection on death, etc.).
+```bash
+./gradlew checkstyleMain checkstyleTest
+```
+
+## CI
+
+GitHub Actions workflow (`.github/workflows/build.yml`) runs on pushes and PRs to `main`/`master`:
+
+1. Checkstyle
+2. Build + tests
+3. JAR artifact upload
 
 ## License
 
