@@ -25,8 +25,11 @@ command:
   listall-enderchest: "§f  - {item} x{amount} §7— {player} (эндер сундук)"
   listall-container: "§f  - {item} x{amount} §7— {world} ({x}, {y}, {z})"
   listall-empty: "§7Защищённые предметы не найдены."
+  toggle-enabled: "§aЗащита предметов включена."
+  toggle-disabled: "§cЗащита предметов отключена."
+  usage-toggle: "§f/protected toggle §7— включить/отключить защиту предметов"
   help-short: "Пометить предмет как защищённый"
-  help-full: "§e/protected add §7— сделать предмет в руке защищённым\n§e/protected remove §7— снять свойство защищённости\n§e/protected check §7— проверить, помечен ли предмет\n§e/protected list §7— список ваших защищённых предметов\n§e/protected list <игрок> §7— список защищённых предметов игрока\n§e/protected listall §7— все защищённые предметы в мире"
+  help-full: "§e/protected add §7— сделать предмет в руке защищённым\n§e/protected remove §7— снять свойство защищённости\n§e/protected check §7— проверить, помечен ли предмет\n§e/protected list §7— список ваших защищённых предметов\n§e/protected list <игрок> §7— список защищённых предметов игрока\n§e/protected listall §7— все защищённые предметы в мире\n§e/protected toggle §7— включить/отключить защиту предметов"
 
 action:
   cannot-drop: "§cЗащищённый предмет нельзя выбросить."

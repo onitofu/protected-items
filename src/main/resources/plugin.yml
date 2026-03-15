@@ -6,7 +6,7 @@ api-version: '1.21'
 commands:
   protected:
     description: Protect item in hand or remove protection
-    usage: /<command> <add|remove|check|list|listall>
+    usage: /<command> <add|remove|check|list|listall|toggle>
     permission: protecteditems.use
 
 permissions:

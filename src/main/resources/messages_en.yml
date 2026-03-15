@@ -25,8 +25,11 @@ command:
   listall-enderchest: "§f  - {item} x{amount} §7— {player} (ender chest)"
   listall-container: "§f  - {item} x{amount} §7— {world} ({x}, {y}, {z})"
   listall-empty: "§7No protected items found."
+  toggle-enabled: "§aItem protection enabled."
+  toggle-disabled: "§cItem protection disabled."
+  usage-toggle: "§f/protected toggle §7— enable/disable item protection"
   help-short: "Mark item in hand as protected"
-  help-full: "§e/protected add §7— mark the item in hand as protected\n§e/protected remove §7— remove the protected property\n§e/protected check §7— check if the item is marked\n§e/protected list §7— list your protected items\n§e/protected list <player> §7— list a player's protected items\n§e/protected listall §7— list all protected items in the world"
+  help-full: "§e/protected add §7— mark the item in hand as protected\n§e/protected remove §7— remove the protected property\n§e/protected check §7— check if the item is marked\n§e/protected list §7— list your protected items\n§e/protected list <player> §7— list a player's protected items\n§e/protected listall §7— list all protected items in the world\n§e/protected toggle §7— enable/disable item protection"
 
 action:
   cannot-drop: "§cYou cannot drop a protected item."

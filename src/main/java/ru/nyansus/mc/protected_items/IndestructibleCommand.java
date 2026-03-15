@@ -12,6 +12,7 @@ import ru.nyansus.mc.protected_items.command.ICommand;
 import ru.nyansus.mc.protected_items.command.ListAllCommand;
 import ru.nyansus.mc.protected_items.command.ListCommand;
 import ru.nyansus.mc.protected_items.command.RemoveCommand;
+import ru.nyansus.mc.protected_items.command.ToggleCommand;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +34,7 @@ public final class IndestructibleCommand implements CommandExecutor, TabComplete
         register(new CheckCommand(plugin), "check");
         register(new ListCommand(plugin), "list");
         register(new ListAllCommand(plugin), "listall");
+        register(new ToggleCommand(plugin), "toggle");
     }
 
     private void register(ICommand cmd, String... names) {

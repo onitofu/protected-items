@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class IndestructibleItems extends JavaPlugin {
 
     private Messages messages;
+    private boolean protectionEnabled = true;
 
     @Override
     public void onEnable() {
@@ -20,6 +21,14 @@ public class IndestructibleItems extends JavaPlugin {
 
     public Messages getMessages() {
         return messages;
+    }
+
+    public boolean isProtectionEnabled() {
+        return protectionEnabled;
+    }
+
+    public void setProtectionEnabled(boolean enabled) {
+        this.protectionEnabled = enabled;
     }
 
     @Override

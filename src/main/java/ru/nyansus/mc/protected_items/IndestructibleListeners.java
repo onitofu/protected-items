@@ -1,11 +1,14 @@
 package ru.nyansus.mc.protected_items;
 
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
@@ -23,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,6 +34,7 @@ public final class IndestructibleListeners implements Listener {
 
     private final IndestructibleItems plugin;
     private final ConcurrentHashMap<UUID, List<ItemStack>> keptOnDeath = new ConcurrentHashMap<>();
+    private final Random random = new Random();
 
     public IndestructibleListeners(IndestructibleItems plugin) {
         this.plugin = plugin;
@@ -37,6 +42,9 @@ public final class IndestructibleListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDrop(PlayerDropItemEvent event) {
+        if (!plugin.isProtectionEnabled()) {
+            return;
+        }
         if (IndestructibleUtil.isIndestructible(event.getItemDrop().getItemStack())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(plugin.getMessages().get(event.getPlayer(), "action.cannot-drop"));
@@ -45,6 +53,9 @@ public final class IndestructibleListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDeath(PlayerDeathEvent event) {
+        if (!plugin.isProtectionEnabled()) {
+            return;
+        }
         Player player = event.getEntity();
         List<ItemStack> toKeep = new ArrayList<>();
         List<ItemStack> drops = new ArrayList<>(event.getDrops());
@@ -90,6 +101,9 @@ public final class IndestructibleListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
+        if (!plugin.isProtectionEnabled()) {
+            return;
+        }
         if (IndestructibleUtil.isIndestructible(event.getItemInHand())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(plugin.getMessages().get(event.getPlayer(), "action.cannot-place"));
@@ -97,7 +111,58 @@ public final class IndestructibleListeners implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (!plugin.isProtectionEnabled()) {
+            return;
+        }
+        BlockState state = event.getBlock().getState();
+        if (!(state instanceof Container container)) {
+            return;
+        }
+        Player player = event.getPlayer();
+        List<ItemStack> protectedItems = new ArrayList<>();
+        for (ItemStack item : container.getInventory().getContents()) {
+            if (IndestructibleUtil.isIndestructible(item)) {
+                protectedItems.add(item.clone());
+            }
+        }
+        if (protectedItems.isEmpty()) {
+            return;
+        }
+        container.getInventory().removeItem(protectedItems.toArray(new ItemStack[0]));
+        for (ItemStack item : protectedItems) {
+            if (player.getInventory().firstEmpty() != -1) {
+                player.getInventory().addItem(item);
+            } else {
+                displaceRandomItem(player, item);
+            }
+        }
+    }
+
+    private void displaceRandomItem(Player player, ItemStack protectedItem) {
+        ItemStack[] contents = player.getInventory().getStorageContents();
+        List<Integer> nonProtectedSlots = new ArrayList<>();
+        for (int i = 0; i < contents.length; i++) {
+            if (contents[i] != null && !contents[i].getType().isAir()
+                    && !IndestructibleUtil.isIndestructible(contents[i])) {
+                nonProtectedSlots.add(i);
+            }
+        }
+        if (nonProtectedSlots.isEmpty()) {
+            player.getWorld().dropItemNaturally(player.getLocation(), protectedItem);
+            return;
+        }
+        int slot = nonProtectedSlots.get(random.nextInt(nonProtectedSlots.size()));
+        ItemStack displaced = contents[slot].clone();
+        player.getInventory().setItem(slot, protectedItem);
+        player.getWorld().dropItemNaturally(player.getLocation(), displaced);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onItemFrameInteract(PlayerInteractEntityEvent event) {
+        if (!plugin.isProtectionEnabled()) {
+            return;
+        }
         if (!(event.getRightClicked() instanceof ItemFrame)) {
             return;
         }
@@ -112,6 +177,9 @@ public final class IndestructibleListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRightClickUse(PlayerInteractEvent event) {
+        if (!plugin.isProtectionEnabled()) {
+            return;
+        }
         if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
@@ -129,6 +197,9 @@ public final class IndestructibleListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
+        if (!plugin.isProtectionEnabled()) {
+            return;
+        }
         if (!(event.getWhoClicked() instanceof Player player)) {
             return;
         }
@@ -159,6 +230,9 @@ public final class IndestructibleListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryDrag(InventoryDragEvent event) {
+        if (!plugin.isProtectionEnabled()) {
+            return;
+        }
         if (!(event.getWhoClicked() instanceof Player player)) {
             return;
         }
