@@ -9,8 +9,8 @@ import org.bukkit.block.Container;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import ru.nyansus.mc.protected_items.IndestructibleItems;
-import ru.nyansus.mc.protected_items.IndestructibleUtil;
+import ru.nyansus.mc.protected_items.ProtectedItems;
+import ru.nyansus.mc.protected_items.ProtectionUtil;
 import ru.nyansus.mc.protected_items.Permissions;
 
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ import java.util.List;
 
 public final class ListAllCommand implements ICommand {
 
-    private final IndestructibleItems plugin;
+    private final ProtectedItems plugin;
 
-    public ListAllCommand(IndestructibleItems plugin) {
+    public ListAllCommand(ProtectedItems plugin) {
         this.plugin = plugin;
     }
 
@@ -55,9 +55,9 @@ public final class ListAllCommand implements ICommand {
 
     private void collectFromInventory(CommandSender sender, Player player, List<String> lines) {
         for (ItemStack item : player.getInventory().getContents()) {
-            if (IndestructibleUtil.isIndestructible(item)) {
+            if (ProtectionUtil.isProtected(item)) {
                 lines.add(plugin.getMessages().get(sender, "command.listall-inventory",
-                        "{item}", IndestructibleUtil.formatItemName(item),
+                        "{item}", ProtectionUtil.formatItemName(item),
                         "{amount}", String.valueOf(item.getAmount()),
                         "{player}", player.getName()));
             }
@@ -66,9 +66,9 @@ public final class ListAllCommand implements ICommand {
 
     private void collectFromEnderChest(CommandSender sender, Player player, List<String> lines) {
         for (ItemStack item : player.getEnderChest().getContents()) {
-            if (IndestructibleUtil.isIndestructible(item)) {
+            if (ProtectionUtil.isProtected(item)) {
                 lines.add(plugin.getMessages().get(sender, "command.listall-enderchest",
-                        "{item}", IndestructibleUtil.formatItemName(item),
+                        "{item}", ProtectionUtil.formatItemName(item),
                         "{amount}", String.valueOf(item.getAmount()),
                         "{player}", player.getName()));
             }
@@ -82,10 +82,10 @@ public final class ListAllCommand implements ICommand {
                     continue;
                 }
                 for (ItemStack item : container.getInventory().getContents()) {
-                    if (IndestructibleUtil.isIndestructible(item)) {
+                    if (ProtectionUtil.isProtected(item)) {
                         Location loc = state.getLocation();
                         lines.add(plugin.getMessages().get(sender, "command.listall-container",
-                                "{item}", IndestructibleUtil.formatItemName(item),
+                                "{item}", ProtectionUtil.formatItemName(item),
                                 "{amount}", String.valueOf(item.getAmount()),
                                 "{world}", world.getName(),
                                 "{x}", String.valueOf(loc.getBlockX()),

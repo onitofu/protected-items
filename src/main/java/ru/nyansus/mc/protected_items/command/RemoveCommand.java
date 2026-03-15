@@ -3,20 +3,20 @@ package ru.nyansus.mc.protected_items.command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import ru.nyansus.mc.protected_items.IndestructibleItems;
-import ru.nyansus.mc.protected_items.IndestructibleUtil;
+import ru.nyansus.mc.protected_items.ProtectedItems;
+import ru.nyansus.mc.protected_items.ProtectionUtil;
 
 import java.util.List;
 
 public final class RemoveCommand extends HeldItemCommand {
 
-    public RemoveCommand(IndestructibleItems plugin) {
+    public RemoveCommand(ProtectedItems plugin) {
         super(plugin);
     }
 
     @Override
     protected void executeWithItem(Player player, ItemStack hand, String[] args) {
-        IndestructibleUtil.setIndestructible(hand, false);
+        ProtectionUtil.setProtected(hand, false);
         player.sendMessage(plugin.getMessages().get(player, "command.remove-success"));
     }
 

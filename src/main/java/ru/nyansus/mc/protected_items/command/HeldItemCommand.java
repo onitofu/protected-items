@@ -3,16 +3,16 @@ package ru.nyansus.mc.protected_items.command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import ru.nyansus.mc.protected_items.IndestructibleItems;
+import ru.nyansus.mc.protected_items.ProtectedItems;
 
 /**
  * Base for subcommands that require a player holding a non-air item.
  */
 public abstract class HeldItemCommand implements ICommand {
 
-    protected final IndestructibleItems plugin;
+    protected final ProtectedItems plugin;
 
-    protected HeldItemCommand(IndestructibleItems plugin) {
+    protected HeldItemCommand(ProtectedItems plugin) {
         this.plugin = plugin;
     }
 

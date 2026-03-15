@@ -3,11 +3,11 @@ package ru.nyansus.mc.protected_items;
 import org.bukkit.command.CommandSender;
 import org.bukkit.help.HelpTopic;
 
-public final class IndestructibleHelpTopic extends HelpTopic {
+public final class ProtectedHelpTopic extends HelpTopic {
 
-    private final IndestructibleItems plugin;
+    private final ProtectedItems plugin;
 
-    public IndestructibleHelpTopic(IndestructibleItems plugin) {
+    public ProtectedHelpTopic(ProtectedItems plugin) {
         this.plugin = plugin;
         this.name = "/protected";
         this.shortText = plugin.getMessages().get("en", "command.help-short");

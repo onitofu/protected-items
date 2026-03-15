@@ -13,13 +13,13 @@ import static org.junit.Assert.assertEquals;
 public class MessagesTest {
 
     private ServerMock server;
-    private IndestructibleItems plugin;
+    private ProtectedItems plugin;
     private Messages messages;
 
     @Before
     public void setUp() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(IndestructibleItems.class);
+        plugin = MockBukkit.load(ProtectedItems.class);
         messages = plugin.getMessages();
     }
 

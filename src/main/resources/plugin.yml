@@ -1,6 +1,6 @@
 name: protected-items
 version: '${version}'
-main: ru.nyansus.mc.protected_items.IndestructibleItems
+main: ru.nyansus.mc.protected_items.ProtectedItems
 api-version: '1.21'
 
 commands:

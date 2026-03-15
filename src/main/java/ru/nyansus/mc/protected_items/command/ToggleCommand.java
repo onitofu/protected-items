@@ -1,16 +1,16 @@
 package ru.nyansus.mc.protected_items.command;
 
 import org.bukkit.command.CommandSender;
-import ru.nyansus.mc.protected_items.IndestructibleItems;
+import ru.nyansus.mc.protected_items.ProtectedItems;
 import ru.nyansus.mc.protected_items.Permissions;
 
 import java.util.List;
 
 public final class ToggleCommand implements ICommand {
 
-    private final IndestructibleItems plugin;
+    private final ProtectedItems plugin;
 
-    public ToggleCommand(IndestructibleItems plugin) {
+    public ToggleCommand(ProtectedItems plugin) {
         this.plugin = plugin;
     }
 

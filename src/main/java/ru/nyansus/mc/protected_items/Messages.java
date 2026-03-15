@@ -78,10 +78,6 @@ public final class Messages {
         return msg;
     }
 
-    public String get(Player player, String key) {
-        return get(normalizeLocale(player.getLocale()), key);
-    }
-
     public String get(String locale, String key) {
         String msg = getFromLocale(locale, key);
         if (msg != null) {
