@@ -11,17 +11,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class IndestructibleHelpTopicTest {
+public class ProtectedHelpTopicTest {
 
     private ServerMock server;
-    private IndestructibleItems plugin;
-    private IndestructibleHelpTopic helpTopic;
+    private ProtectedItems plugin;
+    private ProtectedHelpTopic helpTopic;
 
     @Before
     public void setUp() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(IndestructibleItems.class);
-        helpTopic = new IndestructibleHelpTopic(plugin);
+        plugin = MockBukkit.load(ProtectedItems.class);
+        helpTopic = new ProtectedHelpTopic(plugin);
     }
 
     @After

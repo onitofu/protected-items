@@ -14,15 +14,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-public class IndestructibleUtilTest {
+public class ProtectionUtilTest {
 
     private ServerMock server;
-    private IndestructibleItems plugin;
+    private ProtectedItems plugin;
 
     @Before
     public void setUp() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(IndestructibleItems.class);
+        plugin = MockBukkit.load(ProtectedItems.class);
     }
 
     @After
@@ -31,60 +31,60 @@ public class IndestructibleUtilTest {
     }
 
     @Test
-    public void isIndestructible_emptyItem_returnsFalse() {
+    public void isProtected_emptyItem_returnsFalse() {
         ItemStack air = new ItemStack(Material.AIR);
-        assertFalse(IndestructibleUtil.isIndestructible(air));
+        assertFalse(ProtectionUtil.isProtected(air));
     }
 
     @Test
-    public void isIndestructible_null_returnsFalse() {
-        assertFalse(IndestructibleUtil.isIndestructible(null));
+    public void isProtected_null_returnsFalse() {
+        assertFalse(ProtectionUtil.isProtected(null));
     }
 
     @Test
-    public void isIndestructible_normalItem_returnsFalse() {
+    public void isProtected_normalItem_returnsFalse() {
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        assertFalse(IndestructibleUtil.isIndestructible(sword));
+        assertFalse(ProtectionUtil.isProtected(sword));
     }
 
     @Test
-    public void setIndestructible_add_thenIsIndestructible_returnsTrue() {
+    public void setProtected_add_thenIsProtected_returnsTrue() {
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(sword, true);
-        assertTrue(IndestructibleUtil.isIndestructible(sword));
+        ProtectionUtil.setProtected(sword, true);
+        assertTrue(ProtectionUtil.isProtected(sword));
     }
 
     @Test
-    public void setIndestructible_remove_thenIsIndestructible_returnsFalse() {
+    public void setProtected_remove_thenIsProtected_returnsFalse() {
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(sword, true);
-        IndestructibleUtil.setIndestructible(sword, false);
-        assertFalse(IndestructibleUtil.isIndestructible(sword));
+        ProtectionUtil.setProtected(sword, true);
+        ProtectionUtil.setProtected(sword, false);
+        assertFalse(ProtectionUtil.isProtected(sword));
     }
 
     @Test
     public void getKey_returnsCachedInstance() {
-        assertNotNull(IndestructibleUtil.getKey());
-        assertSame(IndestructibleUtil.getKey(), IndestructibleUtil.getKey());
+        assertNotNull(ProtectionUtil.getKey());
+        assertSame(ProtectionUtil.getKey(), ProtectionUtil.getKey());
     }
 
     @Test
-    public void setIndestructible_null_doesNotThrow() {
-        IndestructibleUtil.setIndestructible(null, true);
-        IndestructibleUtil.setIndestructible(null, false);
+    public void setProtected_null_doesNotThrow() {
+        ProtectionUtil.setProtected(null, true);
+        ProtectionUtil.setProtected(null, false);
     }
 
     @Test
     public void formatItemName_normalItem_capitalizedWords() {
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        String name = IndestructibleUtil.formatItemName(sword);
+        String name = ProtectionUtil.formatItemName(sword);
         assertEquals("Diamond Sword", name);
     }
 
     @Test
     public void formatItemName_singleWord_capitalized() {
         ItemStack dirt = new ItemStack(Material.DIRT);
-        String name = IndestructibleUtil.formatItemName(dirt);
+        String name = ProtectionUtil.formatItemName(dirt);
         assertEquals("Dirt", name);
     }
 }

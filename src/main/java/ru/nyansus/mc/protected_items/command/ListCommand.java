@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import ru.nyansus.mc.protected_items.IndestructibleItems;
-import ru.nyansus.mc.protected_items.IndestructibleUtil;
+import ru.nyansus.mc.protected_items.ProtectedItems;
+import ru.nyansus.mc.protected_items.ProtectionUtil;
 import ru.nyansus.mc.protected_items.Permissions;
 
 import java.util.ArrayList;
@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 public final class ListCommand implements ICommand {
 
-    private final IndestructibleItems plugin;
+    private final ProtectedItems plugin;
 
-    public ListCommand(IndestructibleItems plugin) {
+    public ListCommand(ProtectedItems plugin) {
         this.plugin = plugin;
     }
 
@@ -47,7 +47,7 @@ public final class ListCommand implements ICommand {
     private void listPlayerItems(CommandSender sender, Player target, boolean other) {
         List<ItemStack> found = new ArrayList<>();
         for (ItemStack item : target.getInventory().getContents()) {
-            if (IndestructibleUtil.isIndestructible(item)) {
+            if (ProtectionUtil.isProtected(item)) {
                 found.add(item);
             }
         }
@@ -64,7 +64,7 @@ public final class ListCommand implements ICommand {
 
         for (ItemStack item : found) {
             sender.sendMessage(plugin.getMessages().get(sender, "command.list-item",
-                    "{item}", IndestructibleUtil.formatItemName(item),
+                    "{item}", ProtectionUtil.formatItemName(item),
                     "{amount}", String.valueOf(item.getAmount())));
         }
     }

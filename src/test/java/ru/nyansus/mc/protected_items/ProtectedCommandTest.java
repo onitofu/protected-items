@@ -15,17 +15,17 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class IndestructibleCommandTest {
+public class ProtectedCommandTest {
 
     private ServerMock server;
-    private IndestructibleItems plugin;
-    private IndestructibleCommand command;
+    private ProtectedItems plugin;
+    private ProtectedCommand command;
 
     @Before
     public void setUp() {
         server = MockBukkit.mock();
-        plugin = MockBukkit.load(IndestructibleItems.class);
-        command = new IndestructibleCommand(plugin);
+        plugin = MockBukkit.load(ProtectedItems.class);
+        command = new ProtectedCommand(plugin);
     }
 
     @After
@@ -83,7 +83,7 @@ public class IndestructibleCommandTest {
 
         command.onCommand(player, null, "protected", new String[]{"add"});
 
-        assertTrue(IndestructibleUtil.isIndestructible(player.getInventory().getItemInMainHand()));
+        assertTrue(ProtectionUtil.isProtected(player.getInventory().getItemInMainHand()));
         player.assertSaid(plugin.getMessages().get(player, "command.add-success"));
     }
 
@@ -95,7 +95,7 @@ public class IndestructibleCommandTest {
 
         command.onCommand(player, null, "protected", new String[]{"on"});
 
-        assertTrue(IndestructibleUtil.isIndestructible(player.getInventory().getItemInMainHand()));
+        assertTrue(ProtectionUtil.isProtected(player.getInventory().getItemInMainHand()));
     }
 
     @Test
@@ -103,12 +103,12 @@ public class IndestructibleCommandTest {
         PlayerMock player = server.addPlayer();
         player.addAttachment(plugin, "protecteditems.use", true);
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(sword, true);
+        ProtectionUtil.setProtected(sword, true);
         player.getInventory().setItemInMainHand(sword);
 
         command.onCommand(player, null, "protected", new String[]{"remove"});
 
-        assertFalse(IndestructibleUtil.isIndestructible(player.getInventory().getItemInMainHand()));
+        assertFalse(ProtectionUtil.isProtected(player.getInventory().getItemInMainHand()));
         player.assertSaid(plugin.getMessages().get(player, "command.remove-success"));
     }
 
@@ -117,12 +117,12 @@ public class IndestructibleCommandTest {
         PlayerMock player = server.addPlayer();
         player.addAttachment(plugin, "protecteditems.use", true);
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(sword, true);
+        ProtectionUtil.setProtected(sword, true);
         player.getInventory().setItemInMainHand(sword);
 
         command.onCommand(player, null, "protected", new String[]{"off"});
 
-        assertFalse(IndestructibleUtil.isIndestructible(player.getInventory().getItemInMainHand()));
+        assertFalse(ProtectionUtil.isProtected(player.getInventory().getItemInMainHand()));
     }
 
     @Test
@@ -130,7 +130,7 @@ public class IndestructibleCommandTest {
         PlayerMock player = server.addPlayer();
         player.addAttachment(plugin, "protecteditems.use", true);
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(sword, true);
+        ProtectionUtil.setProtected(sword, true);
         player.getInventory().setItemInMainHand(sword);
 
         command.onCommand(player, null, "protected", new String[]{"check"});
@@ -173,7 +173,7 @@ public class IndestructibleCommandTest {
         PlayerMock player = server.addPlayer();
         player.addAttachment(plugin, "protecteditems.use", true);
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(sword, true);
+        ProtectionUtil.setProtected(sword, true);
         player.getInventory().addItem(sword);
 
         command.onCommand(player, null, "protected", new String[]{"list"});
@@ -197,7 +197,7 @@ public class IndestructibleCommandTest {
 
         PlayerMock target = server.addPlayer();
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(sword, true);
+        ProtectionUtil.setProtected(sword, true);
         target.getInventory().addItem(sword);
 
         command.onCommand(admin, null, "protected", new String[]{"list", target.getName()});
@@ -246,7 +246,7 @@ public class IndestructibleCommandTest {
         admin.addAttachment(plugin, "protecteditems.use", true);
         admin.addAttachment(plugin, "protecteditems.admin", true);
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(sword, true);
+        ProtectionUtil.setProtected(sword, true);
         admin.getInventory().addItem(sword);
 
         command.onCommand(admin, null, "protected", new String[]{"listall"});
@@ -260,7 +260,7 @@ public class IndestructibleCommandTest {
         admin.addAttachment(plugin, "protecteditems.use", true);
         admin.addAttachment(plugin, "protecteditems.admin", true);
         ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-        IndestructibleUtil.setIndestructible(sword, true);
+        ProtectionUtil.setProtected(sword, true);
         admin.getEnderChest().addItem(sword);
 
         command.onCommand(admin, null, "protected", new String[]{"listall"});
